@@ -1,0 +1,4 @@
+â–² Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Terminer le programme de commandes (O/N)ÿ? Terminer le programme de commandes (O/N)ÿ? 

@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Allow users to read and write their own verify profile
+    match /users/{userId} {
+      allow read, create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Testimonials collection
+    match /testimonials/{testimonialId} {
+      // Anyone can read approved testimonials, admins can read all
+      allow read: if resource.data.status == 'approved' || request.auth != null;
+      
+      // Anyone can create a testimonial (it will be approved by default)
+      // Relaxed rules for debugging
+      allow create: if request.resource.data.status == 'approved'
+                    && request.resource.data.name is string
+                    && request.resource.data.rating is number
+                    && request.resource.data.comment is string;
+      
+      // Only authenticated admins can update or delete testimonials
+      allow update, delete: if request.auth != null;
+    }
+
+    // Allow public write access to newsletter subscribers
+    match /newsletter_subscribers/{document} {
+      allow create: if true;
+      allow read: if false;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+▲ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./src/components/Header.tsx:356:30
+Parsing ecmascript source code failed
+[0m [90m 354 |[39m                                         [33m<[39m[33m/[39m[33mLink[39m[33m>[39m
+ [90m 355 |[39m                                     [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+[31m[1m>[22m[39m[90m 356 |[39m                             )}
+ [90m     |[39m                              [31m[1m^[22m[39m
+ [90m 357 |[39m                                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 358 |[39m                         [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 359 |[39m                     [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+
+Import trace:
+  Server Component:
+    ./src/components/Header.tsx
+    ./src/app/layout.tsx
+
+
+    at <unknown> (./src/components/Header.tsx:356:30)
