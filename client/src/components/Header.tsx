@@ -174,9 +174,7 @@ export default function Header() {
                                                     color: isLight ? '#374151' : '#e5e7eb',
                                                 }}
                                             >
-                                                <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                                                    Mon compte
-                                                </span>
+
                                                 <div style={{
                                                     width: '32px',
                                                     height: '32px',
@@ -480,7 +478,6 @@ export default function Header() {
                                         {user.email?.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
-                                        <p style={{ fontWeight: 600, color: isLight ? '#111827' : '#ffffff', margin: 0 }}>Mon Compte</p>
                                         <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: 0 }}>{user.email}</p>
                                     </div>
                                 </Link>
@@ -498,9 +495,10 @@ export default function Header() {
                                 </button>
                             </div>
                         )}
-                    </div>
-                )}
-            </header>
+                    </div >
+                )
+                }
+            </header >
         </>
     );
 }
