@@ -1,8 +1,0 @@
-error: pathspec 'fix:' did not match any file(s) known to git
-error: pathspec 'sync' did not match any file(s) known to git
-error: pathspec 'all' did not match any file(s) known to git
-error: pathspec 'changes' did not match any file(s) known to git
-error: pathspec '-' did not match any file(s) known to git
-error: pathspec 'SEO' did not match any file(s) known to git
-error: pathspec 'Header' did not match any file(s) known to git
-error: pathspec 'Test\ ' did not match any file(s) known to git

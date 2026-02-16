@@ -33,20 +33,13 @@ export const metadata: Metadata = {
     siteName: "JL Cloud",
     title: "JL Cloud | Vos documents administratifs simplifiés",
     description: "La solution la plus simple pour générer vos documents administratifs en ligne.",
-    images: [
-      {
-        url: "/og-image.jpg", // Assurez-vous d'avoir une image Open Graph
-        width: 1200,
-        height: 630,
-        alt: "JL Cloud - Générateur de documents",
-      },
-    ],
+
   },
   twitter: {
     card: "summary_large_image",
     title: "JL Cloud | Vos documents administratifs simplifiés",
     description: "Générez vos attestations en quelques secondes.",
-    images: ["/og-image.jpg"],
+
   },
   robots: {
     index: true,

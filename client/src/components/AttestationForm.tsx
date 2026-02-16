@@ -120,26 +120,8 @@ export default function AttestationForm({
 
             <form onSubmit={handleGenerate}>
                 <div className="form-grid">
-                    {/* Document Type */}
-                    <div className="full-width form-group">
-                        <label htmlFor="documentType">Type d'attestation</label>
-                        <select
-                            id="documentType"
-                            name="documentType"
-                            value={formData.documentType}
-                            onChange={handleChange}
-                            aria-label="Sélectionnez le type de document à générer"
-                        >
-                            <option value="attestation_travail">Attestation de Travail</option>
-                            <option value="attestation_stage">Attestation de Stage</option>
-                            <option value="attestation_honneur">Attestation sur l'Honneur</option>
-                            <option value="justificatif_domicile">Justificatif de Domicile</option>
-                            <option value="certificat_scolarite">Certificat de Scolarité</option>
-                            <option value="lettre_recommandation">Lettre de Recommandation</option>
-                            <option value="attestation_hebergement">Attestation d'Hébergement</option>
-                            <option value="attestation_vie_commune">Attestation de vie commune (Préfecture)</option>
-                        </select>
-                    </div>
+                    {/* Document Type hidden but kept for form consistency if needed, 
+                        honestly we can just rely on externalData but let's remove the UI part */}
 
                     {/* Common Fields: Nom / Prénom */}
 

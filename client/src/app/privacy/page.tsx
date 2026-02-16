@@ -51,7 +51,7 @@ export default function PrivacyPage() {
                         <section>
                             <h2 className="text-xl font-semibold text-white mb-3">5. Contact</h2>
                             <p>
-                                Pour toute question concernant notre politique de confidentialité, vous pouvez nous contacter via notre page de contact ou à l'adresse email : privacy@jdcloud.com.
+                                Pour toute question concernant notre politique de confidentialité, vous pouvez nous contacter via notre page de contact ou à l'adresse email : privacy@jl-cloud.com.
                             </p>
                         </section>
                     </div>
