@@ -93,11 +93,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const deleteAccount = async (password: string) => {
         if (!auth.currentUser || !auth.currentUser.email) return;
 
-        console.log("Attempting to delete account for user:", auth.currentUser.uid);
+
 
         try {
             // 1. Re-authenticate user first
-            console.log("Re-authenticating user...");
+
             const credential = EmailAuthProvider.credential(auth.currentUser.email, password);
             await reauthenticateWithCredential(auth.currentUser, credential);
             console.log("Re-authentication successful.");

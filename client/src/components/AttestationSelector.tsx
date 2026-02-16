@@ -42,9 +42,10 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
                     className="selector-search-input"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    aria-label="Rechercher un document"
                 />
                 {searchQuery && (
-                    <button onClick={() => setSearchQuery("")} className="selector-search-clear">
+                    <button onClick={() => setSearchQuery("")} className="selector-search-clear" aria-label="Effacer la recherche">
                         <X size={16} />
                     </button>
                 )}
@@ -86,10 +87,12 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
                             key={cat.id}
                             onClick={() => setActiveCategory(cat.id)}
                             className={`selector-category-btn ${activeCategory === cat.id ? 'active' : ''}`}
+                            aria-label={`Filtrer par catégorie ${cat.title}`}
+                            aria-pressed={activeCategory === cat.id}
                         >
-                            {Icon && <Icon size={14} />}
+                            {Icon && <Icon size={14} aria-hidden="true" />}
                             <span>{cat.title}</span>
-                            <span className="selector-category-count">{count}</span>
+                            <span className="selector-category-count" aria-hidden="true">{count}</span>
                         </button>
                     );
                 })}
@@ -137,6 +140,7 @@ function PopularCard({ attestation, isActive, onClick, index }: {
             onClick={onClick}
             className={`selector-popular-card ${isActive ? 'active' : ''}`}
             style={{ animationDelay: `${index * 0.06}s` }}
+            aria-label={`Sélectionner ${attestation.title}`}
         >
             <div className="selector-popular-card-icon">
                 <Icon size={18} />
@@ -157,6 +161,7 @@ function ResultCard({ attestation, isActive, onClick, categoryTitle, index }: {
             onClick={onClick}
             className={`selector-result-card ${isActive ? 'active' : ''}`}
             style={{ animationDelay: `${index * 0.05}s` }}
+            aria-label={`Sélectionner ${attestation.title}`}
         >
             <div className="selector-result-card-top">
                 <div className={`selector-result-card-icon ${isActive ? 'active' : ''}`}>
