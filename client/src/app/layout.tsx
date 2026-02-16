@@ -17,29 +17,51 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://jl-cloud.com'), // Remplacez par votre domaine réel
+  metadataBase: new URL('https://jl-cloud.com'),
   title: {
-    default: "JL Cloud | Vos documents administratifs simplifiés",
+    default: "JL Cloud | Générateur d'Attestations et Documents Administratifs Gratuits",
     template: "%s | JL Cloud"
   },
-  description: "Générez vos attestations et documents administratifs en quelques secondes avec JL Cloud. Simple, rapide et sécurisé.",
-  keywords: ["générateur attestation", "documents administratifs", "attestation employeur", "justificatif domicile", "jl cloud", "administration simplifiée"],
+  description: "Créez vos attestations en ligne gratuitement : Attestation d'hébergement, de travail, sur l'honneur, quittance de loyer, certificat de scolarité. Simple, rapide, sécurisé et sans inscription.",
+  keywords: [
+    "générateur attestation gratuit",
+    "attestation hébergement",
+    "attestation sur l'honneur",
+    "attestation travail",
+    "quittance de loyer",
+    "certificat de scolarité",
+    "attestation de salaire",
+    "attestation pôle emploi",
+    "attestation de stage",
+    "documents administratifs pdf",
+    "lettre de recommandation",
+    "justificatif de domicile",
+    "attestation de fin de bail",
+    "attestation loyer à jour",
+    "jl cloud"
+  ],
   authors: [{ name: "JL Cloud Team" }],
   creator: "JL Cloud",
+  publisher: "JL Cloud",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
     url: "https://jl-cloud.com",
     siteName: "JL Cloud",
-    title: "JL Cloud | Vos documents administratifs simplifiés",
-    description: "La solution la plus simple pour générer vos documents administratifs en ligne.",
-
+    title: "JL Cloud | Générateur d'Attestations et Documents Administratifs",
+    description: "La solution la plus simple pour générer vos documents administratifs en ligne. 100% Gratuit et Sécurisé.",
+    images: ["/og-image.png"], // Placeholder, even if not present, useful for future
   },
   twitter: {
     card: "summary_large_image",
-    title: "JL Cloud | Vos documents administratifs simplifiés",
-    description: "Générez vos attestations en quelques secondes.",
-
+    title: "JL Cloud | Vos documents administratifs en 2 clics",
+    description: "Générez vos attestations (Hébergement, Travail, Loyer...) en quelques secondes.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -51,6 +73,9 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  verification: {
+    google: "verification_token", // Placeholder
   },
 };
 

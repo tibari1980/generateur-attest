@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, Grid, List, Star, Filter } from "lucide-react";
+import { Search, Star, Sparkles, ArrowRight, X } from "lucide-react";
 import { ATTESTATIONS, ATTESTATION_CATEGORIES, AttestationType } from "@/constants/attestations";
 
 interface AttestationSelectorProps {
@@ -26,107 +26,150 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
         });
     }, [searchQuery, activeCategory]);
 
+    const getCategoryTitle = (catId: string) => {
+        return ATTESTATION_CATEGORIES.find(c => c.id === catId)?.title || catId;
+    };
+
     return (
-        <div className="w-full space-y-8 animate-fade-in">
-            {/* Header & Search */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" size={18} />
-                    <input
-                        type="text"
-                        placeholder="Rechercher une attestation... (ex: travail, hébergement)"
-                        className="w-full pl-10 pr-4 py-3 bg-[var(--card)] border border-white/10 rounded-xl focus:border-[var(--primary)] transition-all outline-none"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
+        <div className="attestation-selector animate-fade-in">
+
+            {/* Search Bar */}
+            <div className="selector-search-wrapper">
+                <Search className="selector-search-icon" size={18} />
+                <input
+                    type="text"
+                    placeholder="Rechercher un document... (ex: travail, hébergement)"
+                    className="selector-search-input"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                    <button onClick={() => setSearchQuery("")} className="selector-search-clear">
+                        <X size={16} />
+                    </button>
+                )}
             </div>
 
-            {/* Popular Section - Only show when no search/filter or active 'all' */}
+            {/* Popular Section */}
             {searchQuery === "" && activeCategory === "all" && (
-                <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-amber-400 font-medium px-1">
-                        <Star size={18} fill="currentColor" />
-                        <h3>Les plus utilisées</h3>
+                <div className="selector-section animate-fade-in">
+                    <div className="selector-section-header">
+                        <Sparkles size={16} className="selector-section-icon" />
+                        <span>Les plus demandés</span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {popularAttestations.map((att) => (
-                            <AttestationCard
+                    <div className="selector-popular-grid">
+                        {popularAttestations.map((att, i) => (
+                            <PopularCard
                                 key={att.id}
                                 attestation={att}
                                 isActive={currentType === att.id}
                                 onClick={() => onSelect(att.id)}
+                                index={i}
                             />
                         ))}
                     </div>
                 </div>
             )}
 
-            {/* Categories & Filtered List */}
-            <div className="space-y-6">
-                <div className="flex flex-wrap gap-2 pb-2">
-                    {ATTESTATION_CATEGORIES.map((cat) => {
-                        const Icon = cat.icon;
-                        return (
-                            <button
-                                key={cat.id}
-                                onClick={() => setActiveCategory(cat.id)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === cat.id
-                                        ? "bg-[var(--primary)] text-white"
-                                        : "bg-white/5 text-[var(--muted)] hover:bg-white/10"
-                                    }`}
-                            >
-                                {Icon && <Icon size={14} />}
-                                {cat.title}
-                            </button>
-                        );
-                    })}
-                </div>
+            {/* Divider */}
+            <div className="selector-divider" />
 
-                {filteredAttestations.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredAttestations.map((att) => (
-                            <AttestationCard
-                                key={att.id}
-                                attestation={att}
-                                isActive={currentType === att.id}
-                                onClick={() => onSelect(att.id)}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="py-20 text-center space-y-4 bg-white/5 rounded-2xl border border-dashed border-white/10">
-                        <p className="text-[var(--muted)]">Aucune attestation ne correspond à votre recherche.</p>
+            {/* Category Filters */}
+            <div className="selector-categories">
+                {ATTESTATION_CATEGORIES.map((cat) => {
+                    const Icon = cat.icon;
+                    const count = cat.id === 'all'
+                        ? ATTESTATIONS.length
+                        : ATTESTATIONS.filter(a => a.category === cat.id).length;
+                    return (
                         <button
-                            onClick={() => { setSearchQuery(""); setActiveCategory("all"); }}
-                            className="text-[var(--primary)] hover:underline text-sm"
+                            key={cat.id}
+                            onClick={() => setActiveCategory(cat.id)}
+                            className={`selector-category-btn ${activeCategory === cat.id ? 'active' : ''}`}
                         >
-                            Réinitialiser les filtres
+                            {Icon && <Icon size={14} />}
+                            <span>{cat.title}</span>
+                            <span className="selector-category-count">{count}</span>
                         </button>
-                    </div>
-                )}
+                    );
+                })}
             </div>
+
+            {/* Results */}
+            {filteredAttestations.length > 0 ? (
+                <div className="selector-results-grid">
+                    {filteredAttestations.map((att, i) => (
+                        <ResultCard
+                            key={att.id}
+                            attestation={att}
+                            isActive={currentType === att.id}
+                            onClick={() => onSelect(att.id)}
+                            categoryTitle={getCategoryTitle(att.category)}
+                            index={i}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="selector-empty">
+                    <div className="selector-empty-icon">
+                        <Search size={32} />
+                    </div>
+                    <p>Aucun document ne correspond à « {searchQuery} »</p>
+                    <button
+                        onClick={() => { setSearchQuery(""); setActiveCategory("all"); }}
+                        className="selector-empty-reset"
+                    >
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
 
-function AttestationCard({ attestation, isActive, onClick }: { attestation: AttestationType, isActive: boolean, onClick: () => void }) {
+/* ─── Popular Card (compact, highlighted) ─── */
+function PopularCard({ attestation, isActive, onClick, index }: {
+    attestation: AttestationType; isActive: boolean; onClick: () => void; index: number;
+}) {
     const Icon = attestation.icon;
-
     return (
         <button
             onClick={onClick}
-            className={`flex flex-col p-5 rounded-2xl text-left transition-all group border ${isActive
-                    ? "bg-[var(--primary)]/10 border-[var(--primary)] shadow-[0_0_20px_rgba(37,99,235,0.1)]"
-                    : "bg-[var(--card)] border-white/10 hover:border-white/20 hover:translate-y-[-2px]"
-                }`}
+            className={`selector-popular-card ${isActive ? 'active' : ''}`}
+            style={{ animationDelay: `${index * 0.06}s` }}
         >
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors ${isActive ? "bg-[var(--primary)] text-white" : "bg-white/5 text-[var(--primary)] group-hover:bg-[var(--primary)] group-hover:text-white"
-                }`}>
-                <Icon size={20} />
+            <div className="selector-popular-card-icon">
+                <Icon size={18} />
             </div>
-            <h4 className="font-semibold text-white mb-1 group-hover:text-[var(--primary)] transition-colors line-clamp-1">{attestation.title}</h4>
-            <p className="text-sm text-[var(--muted)] line-clamp-2 leading-relaxed">{attestation.description}</p>
+            <span className="selector-popular-card-title">{attestation.title}</span>
+            <ArrowRight size={14} className="selector-popular-card-arrow" />
+        </button>
+    );
+}
+
+/* ─── Result Card (detailed) ─── */
+function ResultCard({ attestation, isActive, onClick, categoryTitle, index }: {
+    attestation: AttestationType; isActive: boolean; onClick: () => void; categoryTitle: string; index: number;
+}) {
+    const Icon = attestation.icon;
+    return (
+        <button
+            onClick={onClick}
+            className={`selector-result-card ${isActive ? 'active' : ''}`}
+            style={{ animationDelay: `${index * 0.05}s` }}
+        >
+            <div className="selector-result-card-top">
+                <div className={`selector-result-card-icon ${isActive ? 'active' : ''}`}>
+                    <Icon size={22} />
+                </div>
+                <span className="selector-result-card-badge">{categoryTitle}</span>
+            </div>
+            <h4 className="selector-result-card-title">{attestation.title}</h4>
+            <p className="selector-result-card-desc">{attestation.description}</p>
+            <div className="selector-result-card-footer">
+                <span>Sélectionner</span>
+                <ArrowRight size={14} />
+            </div>
         </button>
     );
 }

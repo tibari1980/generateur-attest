@@ -11,6 +11,7 @@ interface AttestationPreviewProps {
         prenom: string;
         dateNaissance?: string;
         lieuNaissance?: string;
+        signatureDate?: string;
         poste: string;
         entreprise: string;
         dateDebut: string;
@@ -34,6 +35,66 @@ interface AttestationPreviewProps {
         partnerNationality?: string;
         relationshipType?: string;
         city?: string;
+        // Financial Support
+        amount?: string;
+        duration?: string;
+        beneficiaryName?: string;
+        beneficiaryFirstName?: string;
+        // Non-Polygamy
+        maritalStatus?: string;
+        marriageDate?: string;
+        // Concordance
+        doc1Type?: string;
+        doc1Name?: string;
+        doc1Firstname?: string;
+        doc2Type?: string;
+        doc2Name?: string;
+        doc2Firstname?: string;
+        discordanceType?: string;
+        // Work
+        contractType?: string;
+        trialPeriod?: string;
+        salaryAmount?: string;
+        salaryType?: string;
+        salaryFrequency?: string;
+        salaryGross?: string;
+        salaryNet?: string;
+        bonuses?: string;
+        remoteDays?: string;
+        remoteFixedDays?: string;
+        remoteLocation?: string;
+        // Personal
+        profession?: string;
+        witnessLink?: string;
+        facts?: string;
+        mandataireNom?: string;
+        mandatairePrenom?: string;
+        mandataireAdresse?: string;
+        mandateObject?: string;
+        mandateDuration?: string;
+        exPartnerNom?: string;
+        exPartnerPrenom?: string;
+        exPartnerAdresse?: string;
+        separationDate?: string;
+        // Education
+        trainingTitle?: string;
+        trainingHours?: string;
+        assiduityRate?: string;
+        diplomaTitle?: string;
+        diplomaSpeciality?: string;
+        diplomaSession?: string;
+        diplomaMention?: string;
+        examList?: string;
+        // Domicile
+        rentPeriod?: string;
+        rentAmount?: string;
+        chargesAmount?: string;
+        paymentDate?: string;
+        entryDate?: string;
+        currentRentAmount?: string;
+        departureDate?: string;
+        paymentStatus?: string;
+        newAddress?: string;
     };
 }
 
@@ -219,6 +280,438 @@ export default function AttestationPreview({ data }: AttestationPreviewProps) {
                         </p>
                     </div>
                 );
+            case "attestation_financiere":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>,
+                            {birthInfo && <span className="block my-2">né(e) le {data.dateNaissance?.split('-').reverse().join('/')} à {data.lieuNaissance},</span>}
+                            demeurant à <strong>{data.address || "[Adresse complète]"}</strong>,
+                        </p>
+                        <p className="mt-6">
+                            M'engage sur l'honneur à subvenir aux besoins financiers de :
+                        </p>
+                        <div className="text-lg text-center font-medium my-6">
+                            M. / Mme <strong>{data.beneficiaryFirstName || "[Prénom]"} {data.beneficiaryName || "[Nom]"}</strong>
+                        </div>
+                        <p>
+                            Pour ses frais de vie (hébergement, nourriture, soins, etc.)
+                            {data.amount && <> à hauteur de <strong>{data.amount}€ par mois</strong></>}
+                            {data.duration && <> pour une durée de <strong>{data.duration}</strong></>}.
+                        </p>
+                        <p className="mt-4">
+                            Cet engagement prend effet à compter du <strong>{data.dateDebut ? data.dateDebut.split('-').reverse().join('/') : "[Date de début]"}</strong>.
+                        </p>
+                    </>
+                );
+            case "attestation_non_polygamie":
+                const statusLabel = data.maritalStatus === 'marie' ? "Marié(e)" :
+                    data.maritalStatus === 'divorce' ? "Divorcé(e)" :
+                        data.maritalStatus === 'veuf' ? "Veuf / Veuve" : "Célibataire";
+
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>,
+                            {birthInfo && <span className="block my-2">né(e) le {data.dateNaissance?.split('-').reverse().join('/')} à {data.lieuNaissance},</span>}
+                            demeurant à <strong>{data.address || "[Adresse complète]"}</strong>,
+                        </p>
+                        <p className="mt-8 p-4 bg-gray-50 border-l-4 border-indigo-500 italic">
+                            Déclare sur l'honneur ne pas vivre en état de polygamie en France.
+                        </p>
+                        <div className="mt-6 space-y-2">
+                            <p>Situation matrimoniale : <strong>{statusLabel}</strong></p>
+                            {data.maritalStatus === 'marie' && data.marriageDate && (
+                                <p>Date de mariage : <strong>{data.marriageDate.split('-').reverse().join('/')}</strong></p>
+                            )}
+                        </div>
+                        <p className="mt-8 text-sm text-gray-500">
+                            Je suis conscient(e) que cette attestation est établie pour servir et valoir ce que de droit.
+                        </p>
+                    </>
+                );
+            case "attestation_residence":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>,
+                            {birthInfo && <span className="block my-2">né(e) le {data.dateNaissance?.split('-').reverse().join('/')} à {data.lieuNaissance},</span>}
+                            demeurant au <strong>{data.address || "[Adresse complète]"}</strong>,
+                        </p>
+                        <p className="mt-6">
+                            Atteste sur l'honneur résider effectivement et de manière habituelle à l'adresse susmentionnée
+                            depuis le <strong>{data.dateDebut ? data.dateDebut.split('-').reverse().join('/') : "[Date de début]"}</strong>.
+                        </p>
+                        <p className="mt-4 text-sm text-gray-500">
+                            J'ai connaissance des sanctions pénales encourues par l'auteur d'une fausse attestation.
+                        </p>
+                    </>
+                );
+            case "attestation_respect_principes":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>,
+                            {birthInfo && <span className="block my-2">né(e) le {data.dateNaissance?.split('-').reverse().join('/')} à {data.lieuNaissance},</span>}
+                            demeurant au <strong>{data.address || "[Adresse complète]"}</strong>,
+                        </p>
+                        <p className="mt-6">
+                            M'engage solennellement à respecter les principes de la République française, à savoir :
+                        </p>
+                        <ul className="list-decimal pl-6 mt-4 space-y-2 font-medium">
+                            <li>La liberté personnelle</li>
+                            <li>La liberté d'expression et de conscience</li>
+                            <li>L'égalité entre les femmes et les hommes</li>
+                            <li>La dignité de la personne humaine</li>
+                            <li>La devise et les symboles de la République</li>
+                            <li>L'intégrité territoriale</li>
+                            <li>La laïcité</li>
+                        </ul>
+                        <p className="mt-6 font-bold text-center">
+                            Je déclare respecter ces principes et ne pas agir contre eux.
+                        </p>
+                    </>
+                );
+            case "attestation_concordance":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>,
+                            {birthInfo && <span className="block my-2">né(e) le {data.dateNaissance?.split('-').reverse().join('/')} à {data.lieuNaissance},</span>}
+                            demeurant au <strong>{data.address || "[Adresse complète]"}</strong>,
+                        </p>
+                        <p className="mt-6">
+                            Atteste sur l'honneur que les documents suivants désignent bien ma personne, malgré les différences constatées :
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-4 my-6 text-sm">
+                            <div className="p-4 bg-gray-50 border border-gray-200 rounded">
+                                <strong className="block mb-2 text-indigo-600 uppercase text-xs">Document 1 ({data.doc1Type || "Type"})</strong>
+                                <div className="font-bold">{data.doc1Name || "Nom"} {data.doc1Firstname || "Prénom"}</div>
+                            </div>
+                            <div className="p-4 bg-gray-50 border border-gray-200 rounded">
+                                <strong className="block mb-2 text-indigo-600 uppercase text-xs">Document 2 ({data.doc2Type || "Type"})</strong>
+                                <div className="font-bold">{data.doc2Name || "Nom"} {data.doc2Firstname || "Prénom"}</div>
+                            </div>
+                        </div>
+
+                        <p className="mb-2">
+                            Nature de la différence : <strong>{data.discordanceType || "[Raison]"}</strong>.
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            Ces variations désignent une seule et même personne physique (moi-même).
+                        </p>
+                    </>
+                );
+            case "attestation_promesse_embauche":
+                return (
+                    <>
+                        <p>
+                            Nous soussignés, <strong>{data.entreprise || "[Entreprise]"}</strong>,
+                            représentés par <strong>{data.representativeName || "[Nom]"}</strong>,
+                        </p>
+                        <p className="mt-4 font-bold text-lg text-center underline">
+                            Objet : Promesse d'embauche
+                        </p>
+                        <p className="mt-4">
+                            Avons le plaisir de confirmer notre intention d'embaucher :<br />
+                            <strong>M. / Mme {fullName}</strong>
+                        </p>
+                        <div className="my-6 p-4 bg-gray-50 border border-gray-200 rounded text-sm space-y-2">
+                            <div className="flex justify-between border-b pb-2">
+                                <span className="text-gray-600">Poste :</span>
+                                <span className="font-bold">{data.poste || "..."}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                                <span className="text-gray-600">Type de contrat :</span>
+                                <span className="font-bold">{data.contractType || "CDI"}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                                <span className="text-gray-600">Date de début :</span>
+                                <span className="font-bold">{data.dateDebut ? data.dateDebut.split('-').reverse().join('/') : "..."}</span>
+                            </div>
+                            <div className="flex justify-between border-b pb-2">
+                                <span className="text-gray-600">Période d'essai :</span>
+                                <span className="font-bold">{data.trialPeriod || "Non spécifiée"}</span>
+                            </div>
+                            <div className="flex justify-between pt-2">
+                                <span className="text-gray-600">Rémunération :</span>
+                                <span className="font-bold">{data.salaryAmount || "..."} € {data.salaryType || "Brut"} / {data.salaryFrequency || "Mensuel"}</span>
+                            </div>
+                        </div>
+                        <p className="text-sm text-gray-500">
+                            Cette promesse est faite sous réserve de la fourniture des documents administratifs nécessaires.
+                        </p>
+                    </>
+                );
+            case "attestation_salaire":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{data.representativeName || "[Nom]"}</strong>,
+                            agissant pour le compte de <strong>{data.entreprise || "[Entreprise]"}</strong>, certifie que :
+                        </p>
+                        <div className="my-4 text-center font-bold text-lg">
+                            M. / Mme {fullName}
+                        </div>
+                        <p>
+                            Est employé(e) au sein de notre société depuis le <strong>{data.dateDebut ? data.dateDebut.split('-').reverse().join('/') : "..."}</strong> en qualité de <strong>{data.poste || "..."}</strong>.
+                        </p>
+                        <div className="my-6 p-4 bg-green-50 border border-green-200 rounded text-sm">
+                            <h4 className="font-bold text-green-800 mb-3 border-b border-green-200 pb-2">Rémunération Actuelle</h4>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span className="block text-xs uppercase text-green-600">Salaire Brut Mensuel</span>
+                                    <span className="font-bold text-lg">{data.salaryGross || "..."} €</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs uppercase text-green-600">Salaire Net Mensuel</span>
+                                    <span className="font-bold text-lg">{data.salaryNet || "..."} €</span>
+                                </div>
+                            </div>
+                            {data.bonuses && (
+                                <div className="mt-4 pt-2 border-t border-green-200">
+                                    <span className="block text-xs uppercase text-green-600">Primes / Avantages</span>
+                                    <span>{data.bonuses}</span>
+                                </div>
+                            )}
+                        </div>
+                        <p className="text-sm text-gray-500">
+                            Je certifie également que l'intéressé(e) n'est ni en période d'essai, ni en préavis de démission ou de licenciement.
+                        </p>
+                    </>
+                );
+            case "attestation_teletravail":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{data.representativeName || "[Nom]"}</strong>,
+                            représentant <strong>{data.entreprise || "[Entreprise]"}</strong>, atteste que :
+                        </p>
+                        <div className="my-4 text-center font-bold text-lg">
+                            M. / Mme {fullName}
+                        </div>
+                        <p>
+                            Occupant le poste de <strong>{data.poste || "..."}</strong>, est autorisé(e) à exercer ses fonctions en télétravail selon les modalités suivantes :
+                        </p>
+                        <ul className="my-6 space-y-3 p-4 bg-blue-50 border border-blue-200 rounded text-sm">
+                            <li className="flex items-center gap-2">
+                                <span className="w-4 h-4 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 text-xs font-bold">1</span>
+                                <span>Volume : <strong>{data.remoteDays || "..."} jours par semaine</strong></span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                                <span className="w-4 h-4 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 text-xs font-bold">2</span>
+                                <span>Jours fixes : <strong>{data.remoteFixedDays || "Non définis"}</strong></span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                                <span className="w-4 h-4 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 text-xs font-bold">3</span>
+                                <span>Lieu autorisé : <strong>{data.remoteLocation || "Domicile"}</strong></span>
+                            </li>
+                        </ul>
+                        <p className="text-sm text-gray-500">
+                            Cette organisation est effective à compter de la signature de la présente.
+                        </p>
+                    </>
+                );
+            case "attestation_assiduite":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>, Responsable de Formation.
+                        </p>
+                        <p className="mt-4">
+                            Certifie que le stagiaire a suivi l'action de formation :<br />
+                            <strong className="text-lg text-blue-800">{data.trainingTitle || "[Intitulé Formation]"}</strong>
+                        </p>
+                        <div className="grid grid-cols-2 gap-4 my-4 p-4 bg-gray-50 rounded border">
+                            <div>
+                                <span className="text-xs text-gray-500 uppercase">Volume Horaire</span>
+                                <div className="font-bold">{data.trainingHours || "..."}</div>
+                            </div>
+                            <div>
+                                <span className="text-xs text-gray-500 uppercase">Taux de réalisation</span>
+                                <div className="font-bold text-green-600">{data.assiduityRate || "100%"}</div>
+                            </div>
+                        </div>
+                        <p className="text-sm text-gray-500">
+                            Période du {data.dateDebut ? data.dateDebut.split('-').reverse().join('/') : "..."} au {data.dateFin ? data.dateFin.split('-').reverse().join('/') : "..."}.
+                        </p>
+                    </>
+                );
+            case "attestation_reussite":
+                return (
+                    <>
+                        <h4 className="text-center font-serif text-xl mb-6">DIPLÔME NATIONAL</h4>
+                        <p>
+                            Le Jury, réuni le {data.signatureDate ? data.signatureDate.split(' à')[0] : "..."} sous la présidence de <strong>{fullName}</strong>,
+                        </p>
+                        <p className="mt-4">
+                            Déclare le candidat admissible au grade de :
+                        </p>
+                        <div className="my-6 p-6 bg-yellow-50 border-2 border-yellow-200 border-double rounded text-center">
+                            <strong className="block text-2xl font-serif text-gray-900 mb-2">{data.diplomaTitle || "[Diplôme]"}</strong>
+                            {data.diplomaSpeciality && <span className="block text-lg text-gray-700 italic">{data.diplomaSpeciality}</span>}
+                        </div>
+                        <p className="text-center">
+                            Mention : <strong className="uppercase">{data.diplomaMention || "Passable"}</strong>
+                        </p>
+                    </>
+                );
+            case "attestation_examen":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>, représentant l'Administration.
+                        </p>
+                        <p className="mt-4">
+                            Certifie la présence de l'étudiant aux épreuves suivantes :
+                        </p>
+                        <div className="my-4 p-4 bg-white border border-gray-200 rounded shadow-sm whitespace-pre-wrap font-mono text-sm">
+                            {data.examList || "Aucune épreuve renseignée."}
+                        </div>
+                        <p className="text-sm italic text-gray-500 mt-2">
+                            Cette attestation est délivrée pour justifier d'une absence professionnelle ou scolaire.
+                        </p>
+                    </>
+                );
+            case "quittance_loyer":
+                return (
+                    <>
+                        <h4 className="text-center font-bold text-lg mb-4 uppercase tracking-wider border-b pb-2">QUITTANCE DE LOYER</h4>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>, Propriétaire.
+                        </p>
+                        <p className="mt-4">
+                            Reconnais avoir reçu ce jour de la part du locataire le paiement complet pour la période :
+                        </p>
+                        <div className="my-4 p-4 bg-emerald-50 border border-emerald-200 rounded text-center">
+                            <strong className="block text-xl text-emerald-800 mb-1">{data.rentPeriod || "[Mois / Année]"}</strong>
+                            <div className="text-sm text-emerald-600">Total payé : <span className="font-mono font-bold">{(parseFloat(data.rentAmount || "0") + parseFloat(data.chargesAmount || "0")).toFixed(2)} €</span></div>
+                        </div>
+                        <ul className="text-sm space-y-1 mb-4">
+                            <li>Loyer nu : {data.rentAmount || "0"} €</li>
+                            <li>Provisions charges : {data.chargesAmount || "0"} €</li>
+                        </ul>
+                        <p className="text-sm text-gray-500">
+                            Date du paiement : {data.paymentDate ? data.paymentDate.split('-').reverse().join('/') : "..."}
+                        </p>
+                    </>
+                );
+            case "attestation_loyer_ajour":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>, Propriétaire du logement.
+                        </p>
+                        <p className="mt-4">
+                            Certifie que le locataire est <strong>à jour de ses loyers et charges</strong> à ce jour.
+                        </p>
+                        <div className="my-6 p-4 bg-blue-50 border border-blue-200 rounded flex items-center gap-3">
+                            <div className="text-2xl">👍</div>
+                            <div>
+                                <div className="font-semibold text-blue-900">Locataire exemplaire</div>
+                                <div className="text-sm text-blue-700">Aucun impayé constaté.</div>
+                            </div>
+                        </div>
+                        <p>
+                            Date d'entrée dans les lieux : {data.entryDate ? data.entryDate.split('-').reverse().join('/') : "..."}.
+                        </p>
+                    </>
+                );
+            case "attestation_fin_bail":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>, Propriétaire.
+                        </p>
+                        <p className="mt-4">
+                            Certifie que le locataire a quitté le logement et rendu les clés le :
+                        </p>
+                        <div className="text-center my-6">
+                            <span className="inline-block px-4 py-2 bg-gray-100 rounded-full font-mono font-bold text-lg">
+                                {data.departureDate ? data.departureDate.split('-').reverse().join('/') : "[Date de départ]"}
+                            </span>
+                        </div>
+                        {data.newAddress && (
+                            <p className="text-sm text-gray-600 border-l-2 border-gray-300 pl-3 italic">
+                                Nouvelle adresse : {data.newAddress}
+                            </p>
+                        )}
+                        <p className="mt-4 font-semibold text-sm">
+                            Situation : {data.paymentStatus || "Soldé"}
+                        </p>
+                    </>
+                );
+            case "attestation_temoin":
+                return (
+                    <>
+                        <h4 className="text-center font-bold text-red-600 mb-4 border-b pb-2">Article 202 du Code de Procédure Civile</h4>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>, exerçant la profession de <strong>{data.profession || "..."}</strong>.
+                        </p>
+                        <p className="mt-2">
+                            Lien avec les parties : <strong>{data.witnessLink || "Aucun"}</strong>.
+                        </p>
+                        <div className="my-4 p-4 bg-orange-50 border border-orange-200 rounded text-sm italic text-orange-800">
+                            "Je sais que cette attestation est établie en vue de sa production en justice et que toute fausse déclaration de ma part m'expose à des sanctions pénales."
+                        </div>
+                        <h5 className="font-bold mt-4 mb-2">FAITS CONSTATÉS :</h5>
+                        <div className="p-4 bg-gray-50 border border-gray-200 rounded min-h-[100px] whitespace-pre-wrap">
+                            {data.facts || "..."}
+                        </div>
+                    </>
+                );
+            case "attestation_procuration":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong> (Le Mandant),
+                        </p>
+                        <p className="mt-4 text-center text-lg">
+                            DONNE POUVOIR À :
+                        </p>
+                        <div className="my-4 p-4 bg-blue-50 border border-blue-200 rounded text-center">
+                            <strong className="block text-xl">{data.mandatairePrenom || "[Prénom]"} {data.mandataireNom || "[Nom]"}</strong>
+                            <div className="text-sm text-gray-600 mt-1">{data.mandataireAdresse || "[Adresse du mandataire]"}</div>
+                            <div className="text-xs uppercase text-blue-500 font-bold mt-2">(Le Mandataire)</div>
+                        </div>
+                        <p>
+                            Pour effectuer en mon nom les démarches suivantes :<br />
+                            <strong>{data.mandateObject || "..."}</strong>
+                        </p>
+                        <p className="mt-4 text-sm text-gray-500">
+                            Validité : <strong>{data.mandateDuration || "Indéterminée"}</strong>.
+                        </p>
+                        <p className="mt-4 font-bold text-center border-t pt-4">
+                            "Bon pour pouvoir"
+                        </p>
+                    </>
+                );
+            case "attestation_separation":
+                return (
+                    <>
+                        <p>
+                            Je soussigné(e), <strong>{fullName}</strong>,
+                            demeurant au <strong>{data.address || "[Adresse complète]"}</strong>,
+                        </p>
+                        <p className="mt-6">
+                            Déclare sur l'honneur être séparé(e) de fait de :<br />
+                            <strong>M. / Mme {data.exPartnerPrenom || "..."} {data.exPartnerNom || "..."}</strong>
+                        </p>
+                        {data.exPartnerAdresse && (
+                            <p className="mt-2 text-sm text-gray-600">
+                                Résidant actuellement à : {data.exPartnerAdresse}
+                            </p>
+                        )}
+                        <div className="my-6 p-4 bg-purple-50 border border-purple-200 rounded text-center">
+                            <span className="block text-sm text-purple-800 mb-1">Date de séparation effective</span>
+                            <strong className="text-2xl text-purple-900">{data.separationDate ? data.separationDate.split('-').reverse().join('/') : "..."}</strong>
+                        </div>
+                        <p className="text-sm text-gray-500">
+                            Nous ne partageons plus de vie commune ni de résidence conjugale depuis cette date.
+                        </p>
+                    </>
+                );
             default:
                 return <p>Document généré automatiquement.</p>;
         }
@@ -232,6 +725,23 @@ export default function AttestationPreview({ data }: AttestationPreviewProps) {
             case "lettre_recommandation": return "Le Recommandant";
             case "attestation_hebergement": return "L'Hébergeant";
             case "attestation_vie_commune": return "Les Déclarants";
+            case "attestation_financiere": return "Le Garant";
+            case "attestation_non_polygamie": return "Le Déclarant";
+            case "attestation_residence": return "Le Déclarant";
+            case "attestation_respect_principes": return "Le Signataire";
+            case "attestation_concordance": return "Le Déclarant";
+            case "attestation_promesse_embauche": return "Pour l'Employeur";
+            case "attestation_salaire": return "L'Employeur";
+            case "attestation_teletravail": return "L'Employeur";
+            case "attestation_temoin": return "Le Témoin";
+            case "attestation_procuration": return "Le Mandant";
+            case "attestation_separation": return "Le Déclarant";
+            case "attestation_assiduite": return "Le Responsable";
+            case "attestation_reussite": return "Le Président du Jury";
+            case "attestation_examen": return "L'Administration";
+            case "quittance_loyer": return "Le Propriétaire";
+            case "attestation_loyer_ajour": return "Le Propriétaire";
+            case "attestation_fin_bail": return "Le Propriétaire";
             default: return `Pour l'entreprise ${data.entreprise || "..."}`;
         }
     };
