@@ -1,3 +1,4 @@
+import { User } from "lucide-react";
 import { AttestationFormData } from "../../types/attestation";
 
 interface IdentityFieldsProps {
@@ -8,6 +9,10 @@ interface IdentityFieldsProps {
 export default function IdentityFields({ formData, onChange }: IdentityFieldsProps) {
     return (
         <>
+            <div className="form-section-header">
+                <User size={16} />
+                <span>Identité du bénéficiaire</span>
+            </div>
             <div className="form-group-row grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Civility */}
                 <div className="form-group">

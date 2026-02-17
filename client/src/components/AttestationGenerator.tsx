@@ -8,13 +8,14 @@ import { useGuestSession } from "@/hooks/useGuestSession";
 import { useAuth } from "@/context/AuthContext";
 import { FileText, ArrowLeft } from "lucide-react";
 import { ATTESTATIONS } from "@/constants/attestations";
+import { AttestationFormData } from "@/types/attestation";
 
 export default function AttestationGenerator() {
     const { user, userProfile } = useAuth();
     const [isSelectorOpen, setIsSelectorOpen] = useState(true);
 
     // Default empty state
-    const initialValues = {
+    const initialValues: AttestationFormData = {
         documentType: "attestation_travail",
         civility: "Monsieur",
         nom: "",
@@ -70,7 +71,7 @@ export default function AttestationGenerator() {
                 dateNaissance: userProfile.dateNaissance || "",
                 lieuNaissance: userProfile.lieuNaissance || "",
                 representativeName: userProfile.displayName || ""
-            });
+            } as AttestationFormData);
         } else if (user && !userProfile && !isRestored && !formData.nom) {
             const names = user.displayName?.split(' ') || [];
             const prenom = names[0] || "";
@@ -82,11 +83,11 @@ export default function AttestationGenerator() {
                 prenom: prenom,
                 nom: nom,
                 representativeName: user.displayName || ""
-            });
+            } as AttestationFormData);
         }
     }, [user, userProfile, isRestored]);
 
-    const handleFormChange = (newData: any) => {
+    const handleFormChange = (newData: AttestationFormData) => {
         setFormData(newData);
     };
 

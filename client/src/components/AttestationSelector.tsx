@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Search, Star, Sparkles, ArrowRight, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ATTESTATIONS, ATTESTATION_CATEGORIES, AttestationType } from "@/constants/attestations";
 
 interface AttestationSelectorProps {
@@ -30,11 +31,29 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
         return ATTESTATION_CATEGORIES.find(c => c.id === catId)?.title || catId;
     };
 
-    return (
-        <div className="attestation-selector animate-fade-in">
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05
+            }
+        }
+    };
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+    };
+
+    return (
+        <div className="attestation-selector">
             {/* Search Bar */}
-            <div className="selector-search-wrapper">
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="selector-search-wrapper"
+            >
                 <Search className="selector-search-icon" size={18} />
                 <input
                     type="text"
@@ -44,39 +63,65 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
                     onChange={(e) => setSearchQuery(e.target.value)}
                     aria-label="Rechercher un document"
                 />
-                {searchQuery && (
-                    <button onClick={() => setSearchQuery("")} className="selector-search-clear" aria-label="Effacer la recherche">
-                        <X size={16} />
-                    </button>
-                )}
-            </div>
+                <AnimatePresence>
+                    {searchQuery && (
+                        <motion.button
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            onClick={() => setSearchQuery("")}
+                            className="selector-search-clear"
+                            aria-label="Effacer la recherche"
+                        >
+                            <X size={16} />
+                        </motion.button>
+                    )}
+                </AnimatePresence>
+            </motion.div>
 
             {/* Popular Section */}
-            {searchQuery === "" && activeCategory === "all" && (
-                <div className="selector-section animate-fade-in">
-                    <div className="selector-section-header">
-                        <Sparkles size={16} className="selector-section-icon" />
-                        <span>Les plus demandés</span>
-                    </div>
-                    <div className="selector-popular-grid">
-                        {popularAttestations.map((att, i) => (
-                            <PopularCard
-                                key={att.id}
-                                attestation={att}
-                                isActive={currentType === att.id}
-                                onClick={() => onSelect(att.id)}
-                                index={i}
-                            />
-                        ))}
-                    </div>
-                </div>
-            )}
+            <AnimatePresence mode="wait">
+                {searchQuery === "" && activeCategory === "all" && (
+                    <motion.div
+                        key="popular-section"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="selector-section overflow-hidden"
+                    >
+                        <div className="selector-section-header">
+                            <Sparkles size={16} className="selector-section-icon" />
+                            <span>Les plus demandés</span>
+                        </div>
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="show"
+                            className="selector-popular-grid"
+                        >
+                            {popularAttestations.map((att, i) => (
+                                <motion.div key={att.id} variants={itemVariants}>
+                                    <PopularCard
+                                        attestation={att}
+                                        isActive={currentType === att.id}
+                                        onClick={() => onSelect(att.id)}
+                                    />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Divider */}
             <div className="selector-divider" />
 
             {/* Category Filters */}
-            <div className="selector-categories">
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="selector-categories"
+            >
                 {ATTESTATION_CATEGORIES.map((cat) => {
                     const Icon = cat.icon;
                     const count = cat.id === 'all'
@@ -97,84 +142,101 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
                         </button>
                     );
                 })}
-            </div>
+            </motion.div>
 
             {/* Results */}
-            {filteredAttestations.length > 0 ? (
-                <div className="selector-results-grid">
-                    {filteredAttestations.map((att, i) => (
-                        <ResultCard
-                            key={att.id}
-                            attestation={att}
-                            isActive={currentType === att.id}
-                            onClick={() => onSelect(att.id)}
-                            categoryTitle={getCategoryTitle(att.category)}
-                            index={i}
-                        />
-                    ))}
-                </div>
-            ) : (
-                <div className="selector-empty">
-                    <div className="selector-empty-icon">
-                        <Search size={32} />
-                    </div>
-                    <p>Aucun document ne correspond à « {searchQuery} »</p>
-                    <button
-                        onClick={() => { setSearchQuery(""); setActiveCategory("all"); }}
-                        className="selector-empty-reset"
+            <AnimatePresence mode="popLayout">
+                {filteredAttestations.length > 0 ? (
+                    <motion.div
+                        key="results-grid"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                        className="selector-results-grid"
                     >
-                        Réinitialiser les filtres
-                    </button>
-                </div>
-            )}
+                        {filteredAttestations.map((att) => (
+                            <motion.div
+                                key={att.id}
+                                variants={itemVariants}
+                                layout
+                            >
+                                <ResultCard
+                                    attestation={att}
+                                    isActive={currentType === att.id}
+                                    onClick={() => onSelect(att.id)}
+                                    categoryTitle={getCategoryTitle(att.category)}
+                                />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="empty-state"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="selector-empty"
+                    >
+                        <div className="selector-empty-icon text-[var(--primary)] opacity-40">
+                            <Search size={48} strokeWidth={1.5} />
+                        </div>
+                        <p className="text-lg font-medium">Aucun document ne correspond à « {searchQuery} »</p>
+                        <p className="text-[var(--muted)] text-sm mb-6">Essayez avec un autre mot-clé ou changez de catégorie.</p>
+                        <button
+                            onClick={() => { setSearchQuery(""); setActiveCategory("all"); }}
+                            className="selector-empty-reset"
+                        >
+                            Réinitialiser les filtres
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
 
-/* ─── Popular Card (compact, highlighted) ─── */
-function PopularCard({ attestation, isActive, onClick, index }: {
-    attestation: AttestationType; isActive: boolean; onClick: () => void; index: number;
+/* ─── Popular Card ─── */
+function PopularCard({ attestation, isActive, onClick }: {
+    attestation: AttestationType; isActive: boolean; onClick: () => void;
 }) {
     const Icon = attestation.icon;
     return (
         <button
             onClick={onClick}
-            className={`selector-popular-card ${isActive ? 'active' : ''}`}
-            style={{ animationDelay: `${index * 0.06}s` }}
+            className={`selector-popular-card group relative overflow-hidden ${isActive ? 'active' : ''}`}
             aria-label={`Sélectionner ${attestation.title}`}
         >
-            <div className="selector-popular-card-icon">
+            <div className="selector-popular-card-icon group-hover:scale-110 transition-transform duration-300">
                 <Icon size={18} />
             </div>
             <span className="selector-popular-card-title">{attestation.title}</span>
-            <ArrowRight size={14} className="selector-popular-card-arrow" />
+            <ArrowRight size={14} className="selector-popular-card-arrow transition-transform group-hover:translate-x-1" />
         </button>
     );
 }
 
-/* ─── Result Card (detailed) ─── */
-function ResultCard({ attestation, isActive, onClick, categoryTitle, index }: {
-    attestation: AttestationType; isActive: boolean; onClick: () => void; categoryTitle: string; index: number;
+/* ─── Result Card ─── */
+function ResultCard({ attestation, isActive, onClick, categoryTitle }: {
+    attestation: AttestationType; isActive: boolean; onClick: () => void; categoryTitle: string;
 }) {
     const Icon = attestation.icon;
     return (
         <button
             onClick={onClick}
-            className={`selector-result-card ${isActive ? 'active' : ''}`}
-            style={{ animationDelay: `${index * 0.05}s` }}
+            className={`selector-result-card group ${isActive ? 'active' : ''}`}
             aria-label={`Sélectionner ${attestation.title}`}
         >
             <div className="selector-result-card-top">
-                <div className={`selector-result-card-icon ${isActive ? 'active' : ''}`}>
+                <div className={`selector-result-card-icon group-hover:scale-110 transition-transform duration-300 ${isActive ? 'active' : ''}`}>
                     <Icon size={22} />
                 </div>
                 <span className="selector-result-card-badge">{categoryTitle}</span>
             </div>
-            <h4 className="selector-result-card-title">{attestation.title}</h4>
-            <p className="selector-result-card-desc">{attestation.description}</p>
+            <h4 className="selector-result-card-title group-hover:text-[var(--primary)] transition-colors">{attestation.title}</h4>
+            <p className="selector-result-card-desc line-clamp-2">{attestation.description}</p>
             <div className="selector-result-card-footer">
-                <span>Sélectionner</span>
-                <ArrowRight size={14} />
+                <span className="group-hover:mr-2 transition-all">Sélectionner</span>
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </div>
         </button>
     );

@@ -12,10 +12,10 @@ export default function PersonalFields({ formData, onChange }: PersonalFieldsPro
             {/* Vie Commune */}
             {formData.documentType === 'attestation_vie_commune' && (
                 <div className="p-4 border border-[var(--primary)]/20 rounded-lg bg-[var(--primary)]/5 mb-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)] mb-4 flex items-center gap-2">
+                    <div className="form-section-header !mt-0 !mb-4">
                         <Heart size={16} />
-                        Conjoint(e) / Partenaire
-                    </h3>
+                        <span>Conjoint(e) / Partenaire</span>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="form-group">
                             <label htmlFor="partnerName">Nom</label>

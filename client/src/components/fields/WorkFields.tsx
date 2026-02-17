@@ -12,10 +12,10 @@ export default function WorkFields({ formData, onChange }: WorkFieldsProps) {
             {/* Promesse d'Embauche */}
             {formData.documentType === 'attestation_promesse_embauche' && (
                 <div className="p-4 border border-[var(--primary)]/20 rounded-lg bg-[var(--primary)]/5 mb-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)] mb-4 flex items-center gap-2">
+                    <div className="form-section-header !mt-0 !mb-4">
                         <FileSignature size={16} />
-                        Détails de la Promesse
-                    </h3>
+                        <span>Détails de la Promesse</span>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="form-group">
                             <label htmlFor="contractType">Type de Contrat</label>
@@ -57,10 +57,10 @@ export default function WorkFields({ formData, onChange }: WorkFieldsProps) {
             {/* Attestation Salaire */}
             {formData.documentType === 'attestation_salaire' && (
                 <div className="p-4 border border-[var(--primary)]/20 rounded-lg bg-[var(--primary)]/5 mb-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)] mb-4 flex items-center gap-2">
+                    <div className="form-section-header !mt-0 !mb-4">
                         <Banknote size={16} />
-                        Détails de Rémunération
-                    </h3>
+                        <span>Détails de Rémunération</span>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="form-group">
                             <label htmlFor="salaryGross">Salaire Brut Mensuel</label>
@@ -81,10 +81,10 @@ export default function WorkFields({ formData, onChange }: WorkFieldsProps) {
             {/* Télétravail */}
             {formData.documentType === 'attestation_teletravail' && (
                 <div className="p-4 border border-[var(--primary)]/20 rounded-lg bg-[var(--primary)]/5 mb-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)] mb-4 flex items-center gap-2">
+                    <div className="form-section-header !mt-0 !mb-4">
                         <Laptop size={16} />
-                        Modalités de Télétravail
-                    </h3>
+                        <span>Modalités de Télétravail</span>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="form-group">
                             <label htmlFor="remoteDays">Jours / semaine</label>
@@ -98,6 +98,38 @@ export default function WorkFields({ formData, onChange }: WorkFieldsProps) {
                     <div className="form-group mt-4">
                         <label htmlFor="remoteLocation">Lieu autorisé</label>
                         <input id="remoteLocation" type="text" name="remoteLocation" value={formData.remoteLocation || "Domicile du salarié"} onChange={onChange} />
+                    </div>
+                </div>
+            )}
+            {/* Recommendation */}
+            {formData.documentType === 'lettre_recommandation' && (
+                <div className="p-4 border border-[var(--primary)]/20 rounded-lg bg-[var(--primary)]/5 mb-6">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)] mb-4">Détails de la Recommandation</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="form-group">
+                            <label htmlFor="recommenderPosition">Votre Poste / Fonction</label>
+                            <input
+                                id="recommenderPosition"
+                                type="text"
+                                name="recommenderPosition"
+                                value={formData.recommenderPosition || ''}
+                                onChange={onChange}
+                                required
+                                placeholder="Directeur Technique"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="relation">Relation avec le candidat</label>
+                            <input
+                                id="relation"
+                                type="text"
+                                name="relation"
+                                value={formData.relation || ''}
+                                onChange={onChange}
+                                required
+                                placeholder="Maître de stage / Manager"
+                            />
+                        </div>
                     </div>
                 </div>
             )}
