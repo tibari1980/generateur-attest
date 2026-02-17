@@ -56,6 +56,11 @@ export default function AttestationForm({
         email: "",
         poste: "",
         entreprise: "",
+        companyAddress: "",
+        companySiret: "",
+        companyTva: "",
+        companyRcs: "",
+        companyCity: "",
         dateDebut: "",
         signatureDate: "",
     });

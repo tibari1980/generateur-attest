@@ -9,6 +9,80 @@ interface WorkFieldsProps {
 export default function WorkFields({ formData, onChange }: WorkFieldsProps) {
     return (
         <>
+            {/* Company Details Section - Visible for all work types */}
+            <div className="p-4 border border-indigo-200 rounded-lg bg-indigo-50 mb-6">
+                <div className="form-section-header !mt-0 !mb-4">
+                    <div className="p-1.5 bg-indigo-100 rounded-md">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-indigo-600">
+                            <path d="M3 21h18M5 21V7l8-4 8 4v14M13 10v11" />
+                        </svg>
+                    </div>
+                    <span className="text-indigo-800">Identité de l'Entreprise (En-tête & Pied de Page)</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="form-group md:col-span-2">
+                        <label htmlFor="companyAddress">Adresse du Siège Social</label>
+                        <input
+                            id="companyAddress"
+                            type="text"
+                            name="companyAddress"
+                            value={formData.companyAddress || ""}
+                            onChange={onChange}
+                            placeholder="Ex: 12 Avenue des Champs-Élysées"
+                            className="w-full"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="companyCity">Code Postal & Ville</label>
+                        <input
+                            id="companyCity"
+                            type="text"
+                            name="companyCity"
+                            value={formData.companyCity || ""}
+                            onChange={onChange}
+                            placeholder="Ex: 75008 Paris"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="companySiret">Numéro SIRET</label>
+                        <input
+                            id="companySiret"
+                            type="text"
+                            name="companySiret"
+                            value={formData.companySiret || ""}
+                            onChange={onChange}
+                            placeholder="Ex: 123 456 789 00012"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="companyRcs">RCS / Ville d'Immatriculation</label>
+                        <input
+                            id="companyRcs"
+                            type="text"
+                            name="companyRcs"
+                            value={formData.companyRcs || ""}
+                            onChange={onChange}
+                            placeholder="Ex: RCS Paris B 123 456 789"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="companyTva">Numéro TVA (Optionnel)</label>
+                        <input
+                            id="companyTva"
+                            type="text"
+                            name="companyTva"
+                            value={formData.companyTva || ""}
+                            onChange={onChange}
+                            placeholder="Ex: FR 32 123456789"
+                        />
+                    </div>
+                </div>
+            </div>
             {/* Promesse d'Embauche */}
             {formData.documentType === 'attestation_promesse_embauche' && (
                 <div className="p-4 border border-[var(--primary)]/20 rounded-lg bg-[var(--primary)]/5 mb-6">

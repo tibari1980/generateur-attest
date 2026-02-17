@@ -9,6 +9,12 @@ export interface AttestationFormData {
     poste: string;
     entreprise: string;
     address?: string;
+    // Company Branding
+    companyAddress?: string;
+    companySiret?: string;
+    companyTva?: string;
+    companyRcs?: string;
+    companyCity?: string;
     representativeName?: string;
     establishment?: string;
     level?: string;
