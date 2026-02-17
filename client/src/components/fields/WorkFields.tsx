@@ -81,6 +81,30 @@ export default function WorkFields({ formData, onChange }: WorkFieldsProps) {
                             placeholder="Ex: FR 32 123456789"
                         />
                     </div>
+
+                    <div className="form-group">
+                        <label htmlFor="companyPhone">Téléphone (Entreprise)</label>
+                        <input
+                            id="companyPhone"
+                            type="tel"
+                            name="companyPhone"
+                            value={formData.companyPhone || ""}
+                            onChange={onChange}
+                            placeholder="Ex: 01 23 45 67 89"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="companyEmail">Email (Entreprise)</label>
+                        <input
+                            id="companyEmail"
+                            type="email"
+                            name="companyEmail"
+                            value={formData.companyEmail || ""}
+                            onChange={onChange}
+                            placeholder="Ex: contact@entreprise.com"
+                        />
+                    </div>
                 </div>
             </div>
             {/* Promesse d'Embauche */}

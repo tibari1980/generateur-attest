@@ -15,6 +15,8 @@ export interface AttestationFormData {
     companyTva?: string;
     companyRcs?: string;
     companyCity?: string;
+    companyPhone?: string;
+    companyEmail?: string;
     representativeName?: string;
     establishment?: string;
     level?: string;

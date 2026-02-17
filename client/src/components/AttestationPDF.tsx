@@ -416,11 +416,11 @@ export default function AttestationPDF({ data }: AttestationPDFProps) {
                 {/* Header */}
                 <View style={styles.header}>
                     {isCompanyDocument ? (
-                        <View style={{ width: '100%' }}>
-                            <Text style={{ fontSize: 24, fontWeight: 'bold', textTransform: 'uppercase', color: '#111827', marginBottom: 4 }}>
-                                {data.entreprise || "Nom de l'Entreprise"}
+                        <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
+                            <Text style={{ fontSize: 22, fontWeight: 'bold', textTransform: 'uppercase', color: '#1F2937', marginBottom: 6, letterSpacing: 1 }}>
+                                {data.entreprise || "NOM DE L'ENTREPRISE"}
                             </Text>
-                            <Text style={{ fontSize: 10, color: '#6B7280' }}>
+                            <Text style={{ fontSize: 9, color: '#4B5563', letterSpacing: 0.5 }}>
                                 {data.companyAddress} {data.companyCity ? `- ${data.companyCity}` : ""}
                             </Text>
                         </View>
@@ -435,10 +435,12 @@ export default function AttestationPDF({ data }: AttestationPDFProps) {
                     )}
                 </View>
 
-                {/* Date for Company Docs (Right aligned below header) */}
+                {/* Date for Company Docs (Right aligned but cleaner) */}
                 {isCompanyDocument && (
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 20 }}>
-                        <Text style={styles.date}>Fait à {data.companyCity ? data.companyCity.split(' ').pop() : 'Paris'}, le {today}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 30 }}>
+                        <Text style={{ fontSize: 10, color: '#374151', fontFamily: 'Helvetica-Oblique' }}>
+                            Fait à {data.companyCity ? data.companyCity.split(' ').pop() : 'Paris'}, le {today}
+                        </Text>
                     </View>
                 )}
 
@@ -452,7 +454,7 @@ export default function AttestationPDF({ data }: AttestationPDFProps) {
 
                 {content.subject && (
                     <View style={{ ...styles.content, marginTop: 10, marginBottom: 10, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Bold', textTransform: 'uppercase' }}>
+                        <Text style={{ fontSize: 13, fontFamily: 'Helvetica-Bold', textTransform: 'uppercase', letterSpacing: 0.5 }}>
                             {content.subject}
                         </Text>
                     </View>
@@ -520,19 +522,45 @@ export default function AttestationPDF({ data }: AttestationPDFProps) {
                         left: 40,
                         right: 40,
                         borderTopWidth: 1,
-                        borderTopColor: '#000',
-                        paddingTop: 10,
+                        borderTopColor: '#E5E7EB',
+                        paddingTop: 12,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ fontSize: 9, fontFamily: 'Helvetica-Bold', marginBottom: 2 }}>
+                        <Text style={{ fontSize: 8, color: '#374151', textAlign: 'center', marginBottom: 3, fontWeight: 'bold' }}>
                             {data.entreprise}
                         </Text>
-                        <Text style={{ fontSize: 8, color: '#374151', textAlign: 'center' }}>
+                        <Text style={{ fontSize: 7, color: '#4B5563', textAlign: 'center', marginBottom: 2 }}>
                             {data.companyAddress} {data.companyCity ? `- ${data.companyCity}` : ""}
                         </Text>
-                        <Text style={{ fontSize: 8, color: '#374151', textAlign: 'center', marginTop: 2 }}>
-                            SIRET : {data.companySiret} {data.companyRcs ? `| RCS : ${data.companyRcs}` : ""} {data.companyTva ? `| TVA : ${data.companyTva}` : ""}
-                        </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <Text style={{ fontSize: 7, color: '#6B7280', marginHorizontal: 3 }}>
+                                SIRET : {data.companySiret}
+                            </Text>
+                            {data.companyRcs && (
+                                <Text style={{ fontSize: 7, color: '#6B7280', marginHorizontal: 3 }}>
+                                    | RCS : {data.companyRcs}
+                                </Text>
+                            )}
+                            {data.companyTva && (
+                                <Text style={{ fontSize: 7, color: '#6B7280', marginHorizontal: 3 }}>
+                                    | TVA : {data.companyTva}
+                                </Text>
+                            )}
+                        </View>
+                        {(data.companyEmail || data.companyPhone) && (
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 2 }}>
+                                {data.companyPhone && (
+                                    <Text style={{ fontSize: 7, color: '#6B7280', marginHorizontal: 4 }}>
+                                        Tél : {data.companyPhone}
+                                    </Text>
+                                )}
+                                {data.companyEmail && (
+                                    <Text style={{ fontSize: 7, color: '#6B7280', marginHorizontal: 4 }}>
+                                        Email : {data.companyEmail}
+                                    </Text>
+                                )}
+                            </View>
+                        )}
                     </View>
                 ) : (
                     <Text style={styles.footer}>
