@@ -86,9 +86,10 @@ export default function AttestationSelector({ onSelect, currentType }: Attestati
                         <button
                             key={cat.id}
                             onClick={() => setActiveCategory(cat.id)}
-                            className={`selector-category-btn ${activeCategory === cat.id ? 'active' : ''}`}
+                            className={`selector-category-btn ${activeCategory === cat.id ? 'active' : ''} focus:ring-2 focus:ring-[var(--primary)] focus:outline-none`}
                             aria-label={`Filtrer par catégorie ${cat.title}`}
                             aria-pressed={activeCategory === cat.id}
+                            aria-current={activeCategory === cat.id ? 'true' : undefined}
                         >
                             {Icon && <Icon size={14} aria-hidden="true" />}
                             <span>{cat.title}</span>

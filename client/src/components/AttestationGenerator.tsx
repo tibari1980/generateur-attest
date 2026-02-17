@@ -94,6 +94,20 @@ export default function AttestationGenerator() {
         setFormData({ ...formData, documentType: type });
         setIsSelectorOpen(false);
 
+        // Move focus to the form when it opens
+        setTimeout(() => {
+            const firstInput = document.getElementById('civility');
+            if (firstInput) {
+                firstInput.focus();
+            } else {
+                const generatorHeader = document.querySelector('#generator h2');
+                if (generatorHeader instanceof HTMLElement) {
+                    generatorHeader.tabIndex = -1;
+                    generatorHeader.focus();
+                }
+            }
+        }, 100);
+
         const generatorElement = document.getElementById('generator-content');
         if (generatorElement && window.innerWidth < 768) {
             generatorElement.scrollIntoView({ behavior: 'smooth' });
@@ -120,6 +134,8 @@ export default function AttestationGenerator() {
                 {!isSelectorOpen && (
                     <button
                         onClick={() => setIsSelectorOpen(true)}
+                        aria-label="Retourner au choix du document"
+                        className="back-selector-btn focus:ring-2 focus:ring-[var(--primary)] focus:outline-none"
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -136,7 +152,7 @@ export default function AttestationGenerator() {
                             transition: 'all 0.2s',
                         }}
                     >
-                        <ArrowLeft size={15} />
+                        <ArrowLeft size={15} aria-hidden="true" />
                         Changer de document
                     </button>
                 )}
